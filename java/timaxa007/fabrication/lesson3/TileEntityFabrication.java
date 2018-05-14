@@ -10,13 +10,14 @@ import net.minecraftforge.common.util.Constants.NBT;
 
 public class TileEntityFabrication extends TileEntity implements ISidedInventory {
 
-	private final ItemStack[] inventory_input = new ItemStack[9];
-	private final ItemStack[] inventory_output = new ItemStack[1];
-	private String custom_name;
+	private final ItemStack[]
+			inventory_input = new ItemStack[9],
+			inventory_output = new ItemStack[1];
 	private static final int[]
 			topSlots = new int[] {9},
 			sideSlots = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8};
 	private FabricationRecepts.Recept recept = null;
+	private String custom_name;
 	public int time = 0, time_max = 0;
 
 	public TileEntityFabrication() {}

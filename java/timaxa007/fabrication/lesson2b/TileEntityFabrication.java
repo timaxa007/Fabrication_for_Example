@@ -11,11 +11,11 @@ import net.minecraftforge.common.util.Constants.NBT;
 public class TileEntityFabrication extends TileEntity implements ISidedInventory {
 
 	private final ItemStack[] inventory = new ItemStack[2];
-	private String custom_name;
 	private static final int[]
 			topSlots = new int[] {1},
 			sideSlots = new int[] {0};
 	private FabricationRecepts.Recept recept = null;
+	private String custom_name;
 	public int time = 0, time_max = 0;
 
 	public TileEntityFabrication() {}
