@@ -16,7 +16,7 @@ public class TileEntityFabrication extends TileEntity implements ISidedInventory
 	private static final int[]
 			topSlots = new int[] {9},
 			sideSlots = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8};
-	private FabricationRecepts.Recept recept = null;
+	private FabricationRecipes.Recipe recipe = null;
 	private String custom_name;
 
 	public TileEntityFabrication() {}
@@ -25,20 +25,20 @@ public class TileEntityFabrication extends TileEntity implements ISidedInventory
 	public void updateEntity() {
 		if (worldObj.isRemote) return;
 		ItemStack output = getStackInSlot(9);
-		recept = FabricationRecepts.getRecept(inventory_input);
+		recipe = FabricationRecipes.getRecipe(inventory_input);
 
-		if (recept != null) {
+		if (recipe != null) {
 
 			if (output == null) {
 
 				for (int i = 0; i < 9; ++i) {
-					if (this.recept.input[i] == null) continue;
+					if (this.recipe.input[i] == null) continue;
 					ItemStack int_input = inventory_input[i];
 					if (int_input != null) {
 						if (int_input.getItem().hasContainerItem(int_input)) {
 							setInventorySlotContents(i, int_input.getItem().getContainerItem(int_input));
 						} else {
-							int_input.stackSize -= this.recept.input[i].stackSize;
+							int_input.stackSize -= this.recipe.input[i].stackSize;
 							if (int_input.stackSize <= 0)
 								setInventorySlotContents(i, null);
 							else
@@ -47,19 +47,19 @@ public class TileEntityFabrication extends TileEntity implements ISidedInventory
 					}
 				}
 
-				setInventorySlotContents(9, recept.output.copy());
-			} else if (output.isItemEqual(recept.output) && ItemStack.areItemStackTagsEqual(output, recept.output) && recept.output.stackSize + output.stackSize <= 64) {
-				output.stackSize += recept.output.stackSize;
+				setInventorySlotContents(9, recipe.output.copy());
+			} else if (output.isItemEqual(recipe.output) && ItemStack.areItemStackTagsEqual(output, recipe.output) && recipe.output.stackSize + output.stackSize <= 64) {
+				output.stackSize += recipe.output.stackSize;
 				setInventorySlotContents(9, output);
 
 				for (int i = 0; i < 9; ++i) {
-					if (this.recept.input[i] == null) continue;
+					if (this.recipe.input[i] == null) continue;
 					ItemStack int_input = inventory_input[i];
 					if (int_input != null) {
 						if (int_input.getItem().hasContainerItem(int_input)) {
 							setInventorySlotContents(i, int_input.getItem().getContainerItem(int_input));
 						} else {
-							int_input.stackSize -= this.recept.input[i].stackSize;
+							int_input.stackSize -= this.recipe.input[i].stackSize;
 							if (int_input.stackSize <= 0)
 								setInventorySlotContents(i, null);
 							else

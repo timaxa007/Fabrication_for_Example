@@ -14,7 +14,7 @@ public class TileEntityFabrication extends TileEntity implements ISidedInventory
 	private static final int[]
 			topSlots = new int[] {1},
 			sideSlots = new int[] {0};
-	private FabricationRecepts.Recept recept = null;
+	private FabricationRecipes.Recipe recipe = null;
 	private String custom_name;
 	public int time = 0, time_max = 0;
 
@@ -28,26 +28,26 @@ public class TileEntityFabrication extends TileEntity implements ISidedInventory
 
 		if (time == 0) {
 
-			if (recept != null) {
+			if (recipe != null) {
 				if (output == null) {
-					setInventorySlotContents(1, recept.output.copy());
-					recept = null;
+					setInventorySlotContents(1, recipe.output.copy());
+					recipe = null;
 					time_max = 0;
-				} else if (output.isItemEqual(recept.output) && ItemStack.areItemStackTagsEqual(output, recept.output) && recept.output.stackSize + output.stackSize <= 64) {
-					output.stackSize += recept.output.stackSize;
+				} else if (output.isItemEqual(recipe.output) && ItemStack.areItemStackTagsEqual(output, recipe.output) && recipe.output.stackSize + output.stackSize <= 64) {
+					output.stackSize += recipe.output.stackSize;
 					setInventorySlotContents(1, output);
-					recept = null;
+					recipe = null;
 					time_max = 0;
 				}
 			} else {
-				recept = FabricationRecepts.getRecept(input);
+				recipe = FabricationRecipes.getRecipe(input);
 
-				if (recept != null) {
-					time_max = time = recept.time;
+				if (recipe != null) {
+					time_max = time = recipe.time;
 					if (input != null && input.getItem().hasContainerItem(input)) {
 						setInventorySlotContents(0, input.getItem().getContainerItem(input));
 					} else {
-						input.stackSize -= recept.input.stackSize;
+						input.stackSize -= recipe.input.stackSize;
 						if (input.stackSize <= 0)
 							setInventorySlotContents(0, null);
 						else
@@ -166,7 +166,7 @@ public class TileEntityFabrication extends TileEntity implements ISidedInventory
 
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack) {
-		if (FabricationRecepts.getRecept(itemStack) == null)
+		if (FabricationRecipes.getRecipe(itemStack) == null)
 			return false;
 		return true;
 	}

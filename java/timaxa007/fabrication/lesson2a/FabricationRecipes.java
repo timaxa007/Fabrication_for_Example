@@ -7,21 +7,21 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class FabricationRecepts {
+public class FabricationRecipes {
 
-	public static class Recept {
+	public static class Recipe {
 		public final ItemStack input[], output;
-		public Recept(ItemStack[] input, ItemStack output) {
+		public Recipe(ItemStack[] input, ItemStack output) {
 			this.input = input;
 			this.output = output;
 		}
 	}
 
-	private static final ArrayList<Recept> list = new ArrayList<Recept>();
+	private static final ArrayList<Recipe> list = new ArrayList<Recipe>();
 
 	static {
 
-		addRecept(new ItemStack[]{
+		addRecipe(new ItemStack[]{
 				new ItemStack(Items.coal, 1, 1),
 				new ItemStack(Items.coal, 1, 1),
 				new ItemStack(Items.coal, 1, 1),
@@ -36,7 +36,7 @@ public class FabricationRecepts {
 		},
 				new ItemStack(Blocks.coal_block, 1, 0));
 
-		addRecept(new ItemStack[]{
+		addRecipe(new ItemStack[]{
 				new ItemStack(Blocks.log, 1, OreDictionary.WILDCARD_VALUE),
 				new ItemStack(Blocks.log, 1, OreDictionary.WILDCARD_VALUE),
 				new ItemStack(Blocks.log, 1, OreDictionary.WILDCARD_VALUE),
@@ -53,26 +53,26 @@ public class FabricationRecepts {
 
 	}
 
-	public static boolean addRecept(ItemStack[] input, ItemStack output) {
-		return list.add(new Recept(input, output));
+	public static boolean addRecipe(ItemStack[] input, ItemStack output) {
+		return list.add(new Recipe(input, output));
 	}
 
-	public static Recept getRecept(ItemStack[] input) {
+	public static Recipe getRecipe(ItemStack[] input) {
 		if (list == null || list.size() == 0) return null;
 		if (input == null) return null;
 
 		boolean next = true;
 
-		for (Recept recept : list) {
+		for (Recipe recipe : list) {
 			for (int i = 0; i < 9; ++i) {
-				if (!isMatch(recept.input[i], input[i])) {
+				if (!isMatch(recipe.input[i], input[i])) {
 					next = true;
 					break;
 				} else {
 					next = false;
 				}
 			}
-			if (!next) return recept;
+			if (!next) return recipe;
 		}
 		return null;
 	}

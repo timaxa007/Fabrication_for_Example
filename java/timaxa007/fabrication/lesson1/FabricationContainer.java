@@ -16,7 +16,7 @@ public class FabricationContainer extends Container {
 		this.addSlotToContainer(new Slot(tile_entity, 0, 50, 33){
 			@Override
 			public boolean isItemValid(ItemStack itemStack) {
-				if (FabricationRecepts.getRecept(itemStack) == null)
+				if (FabricationRecipes.getRecipe(itemStack) == null)
 					return false;
 				return true;
 			}
@@ -59,7 +59,7 @@ public class FabricationContainer extends Container {
 				if (!this.mergeItemStack(itemstack1, tile_entity.getSizeInventory() - 1, this.inventorySlots.size(), true))
 					return null;
 			} else {
-				if (FabricationRecepts.getRecept(itemstack1) == null)
+				if (FabricationRecipes.getRecipe(itemstack1) == null)
 					return null;
 				if (!this.mergeItemStack(itemstack1, 0, tile_entity.getSizeInventory() - 1, false))
 					return null;

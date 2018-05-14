@@ -14,7 +14,7 @@ public class TileEntityFabrication extends TileEntity implements ISidedInventory
 	private static final int[]
 			topSlots = new int[] {1},
 			sideSlots = new int[] {0};
-	private FabricationRecepts.Recept recept = null;
+	private FabricationRecipes.Recipe recipe = null;
 	private String custom_name;
 
 	public TileEntityFabrication() {}
@@ -24,24 +24,24 @@ public class TileEntityFabrication extends TileEntity implements ISidedInventory
 		ItemStack input = getStackInSlot(0);
 		ItemStack output = getStackInSlot(1);
 		if (input != null && output == null) {
-			if (recept == null) {
-				recept = FabricationRecepts.getRecept(input);
-				if (recept != null) {
-					setInventorySlotContents(1, recept.output.copy());
+			if (recipe == null) {
+				recipe = FabricationRecipes.getRecipe(input);
+				if (recipe != null) {
+					setInventorySlotContents(1, recipe.output.copy());
 				}
 			} else {
-				input.stackSize -= recept.input.stackSize;
+				input.stackSize -= recipe.input.stackSize;
 				if (input.stackSize <= 0)
 					setInventorySlotContents(0, null);
 				else
 					setInventorySlotContents(0, input);
-				recept = null;
+				recipe = null;
 			}
 		}
 		else if (input == null) {
-			if (recept != null) {
+			if (recipe != null) {
 				if (output != null) setInventorySlotContents(1, null);
-				if (recept != null) recept = null;
+				if (recipe != null) recipe = null;
 			}
 		}
 	}
@@ -150,7 +150,7 @@ public class TileEntityFabrication extends TileEntity implements ISidedInventory
 
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack) {
-		if (FabricationRecepts.getRecept(itemStack) == null)
+		if (FabricationRecipes.getRecipe(itemStack) == null)
 			return false;
 		return true;
 	}

@@ -18,7 +18,7 @@ public class TileEntityFabrication extends TileEntity implements ISidedInventory
 	private static final int[]
 			topSlots = new int[] {9, 10, 11, 12, 13, 14, 15, 16, 17},
 			sideSlots = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8};
-	private FabricationRecepts.Recept recept = null;
+	private FabricationRecipes.Recipe recipe = null;
 	private String custom_name;
 	public int time = 0, time_max = 0;
 	private final ArrayList<ItemStack> temp = new ArrayList<ItemStack>();
@@ -30,38 +30,38 @@ public class TileEntityFabrication extends TileEntity implements ISidedInventory
 		if (worldObj.isRemote) return;
 
 		if (time == 0) {
-			if (recept != null) {
+			if (recipe != null) {
 
 				if (!temp.isEmpty()) {
 					for (int i = 0; i < temp.size(); ++i) {
 						if (addOutput(temp.get(i))) temp.remove(i);
 					}
 					if (temp.isEmpty()) {
-						recept = null;
+						recipe = null;
 						time_max = 0;
 					}
 				}
 
 			} else {
-				recept = FabricationRecepts.getRecept(inventory_input);
+				recipe = FabricationRecipes.getRecipe(inventory_input);
 
-				if (recept != null) {
-					time_max = time = recept.time;
+				if (recipe != null) {
+					time_max = time = recipe.time;
 
-					if (recept.output != null && recept.output.length > 0) {
-						for (ItemStack output : recept.output) {
+					if (recipe.output != null && recipe.output.length > 0) {
+						for (ItemStack output : recipe.output) {
 							temp.add(output.copy());
 						}
 					}
 
 					for (int i = 0; i < 9; ++i) {
-						if (this.recept.input[i] == null) continue;
+						if (this.recipe.input[i] == null) continue;
 						ItemStack int_input = inventory_input[i];
 						if (int_input != null) {
 							if (int_input.getItem().hasContainerItem(int_input)) {
 								setInventorySlotContents(i, int_input.getItem().getContainerItem(int_input));
 							} else {
-								int_input.stackSize -= this.recept.input[i].stackSize;
+								int_input.stackSize -= this.recipe.input[i].stackSize;
 								if (int_input.stackSize <= 0)
 									setInventorySlotContents(i, null);
 								else
