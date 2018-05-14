@@ -26,7 +26,12 @@ public class FabricationContainer extends Container {
 			}
 		}
 
-		this.addSlotToContainer(new Slot(tile_entity, 9, 110, 33));
+		this.addSlotToContainer(new Slot(tile_entity, 9, 110, 33){
+			@Override
+			public boolean isItemValid(ItemStack itemStack) {
+				return false;
+			}
+		});
 
 		for (j = 0; j < 3; ++j) {
 			for (k = 0; k < 9; ++k) {
@@ -41,6 +46,7 @@ public class FabricationContainer extends Container {
 		this.tile_entity = tile_entity;
 	}
 
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotID) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot)this.inventorySlots.get(slotID);
@@ -64,6 +70,7 @@ public class FabricationContainer extends Container {
 		return itemstack;
 	}
 
+	@Override
 	public void onContainerClosed(EntityPlayer player) {
 		super.onContainerClosed(player);
 		tile_entity.closeInventory();

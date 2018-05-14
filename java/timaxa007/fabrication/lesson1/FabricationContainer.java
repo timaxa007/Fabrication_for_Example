@@ -13,8 +13,20 @@ public class FabricationContainer extends Container {
 	public FabricationContainer(final InventoryPlayer inventory_player, final TileEntityFabrication tile_entity) {
 		tile_entity.openInventory();
 
-		this.addSlotToContainer(new Slot(tile_entity, 0, 50, 33));
-		this.addSlotToContainer(new Slot(tile_entity, 1, 110, 33));
+		this.addSlotToContainer(new Slot(tile_entity, 0, 50, 33){
+			@Override
+			public boolean isItemValid(ItemStack itemStack) {
+				if (FabricationRecepts.getRecept(itemStack) == null)
+					return false;
+				return true;
+			}
+		});
+		this.addSlotToContainer(new Slot(tile_entity, 1, 110, 33){
+			@Override
+			public boolean isItemValid(ItemStack itemStack) {
+				return false;
+			}
+		});
 
 		int j;
 		int k;
@@ -32,6 +44,7 @@ public class FabricationContainer extends Container {
 		this.tile_entity = tile_entity;
 	}
 
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotID) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot)this.inventorySlots.get(slotID);
@@ -40,11 +53,17 @@ public class FabricationContainer extends Container {
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
 
+			System.out.println(slotID + " - " + itemstack);
+
 			if (slotID < tile_entity.getSizeInventory()) {
 				if (!this.mergeItemStack(itemstack1, tile_entity.getSizeInventory() - 1, this.inventorySlots.size(), true))
 					return null;
-			} else if (!this.mergeItemStack(itemstack1, 0, tile_entity.getSizeInventory() - 1, false))
-				return null;
+			} else {
+				if (FabricationRecepts.getRecept(itemstack1) == null)
+					return null;
+				if (!this.mergeItemStack(itemstack1, 0, tile_entity.getSizeInventory() - 1, false))
+					return null;
+			}
 
 			if (itemstack1.stackSize == 0)
 				slot.putStack(null);
@@ -55,6 +74,7 @@ public class FabricationContainer extends Container {
 		return itemstack;
 	}
 
+	@Override
 	public void onContainerClosed(EntityPlayer player) {
 		super.onContainerClosed(player);
 		tile_entity.closeInventory();

@@ -12,8 +12,9 @@ import net.minecraftforge.common.util.Constants.NBT;
 
 public class TileEntityFabrication extends TileEntity implements ISidedInventory {
 
-	private final ItemStack[] inventory_input = new ItemStack[9];
-	private final ItemStack[] inventory_output = new ItemStack[9];
+	private final ItemStack[]
+			inventory_input = new ItemStack[9],
+			inventory_output = new ItemStack[9];
 	private final ArrayList<ItemStack> temp = new ArrayList<ItemStack>();
 	private String custom_name;
 	private static final int[]

@@ -166,6 +166,8 @@ public class TileEntityFabrication extends TileEntity implements ISidedInventory
 
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack) {
+		if (FabricationRecepts.getRecept(itemStack) == null)
+			return false;
 		return true;
 	}
 
@@ -176,7 +178,7 @@ public class TileEntityFabrication extends TileEntity implements ISidedInventory
 
 	@Override
 	public boolean canInsertItem(int slotID, ItemStack itemStack, int side) {
-		return side != 0;
+		return side != 0 && isItemValidForSlot(slotID, itemStack);
 	}
 
 	@Override

@@ -32,6 +32,7 @@ public class FabricationContainer extends Container {
 		this.tile_entity = tile_entity;
 	}
 
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotID) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot)this.inventorySlots.get(slotID);
@@ -58,6 +59,7 @@ public class FabricationContainer extends Container {
 		return itemstack;
 	}
 
+	@Override
 	public void onContainerClosed(EntityPlayer player) {
 		super.onContainerClosed(player);
 		tile_entity.closeInventory();
